@@ -1,0 +1,47 @@
+info:
+  name: Get User KYC Data
+  type: http
+  seq: 1
+
+http:
+  method: GET
+  url: "{{baseUrl}}/kyc"
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Success
+    request:
+      url: ""
+      method: GET
+    response:
+      status: 200
+      statusText: OK
+      body:
+        type: text
+        data: |-
+          {
+            "_id": "user_kyc_object_id",
+            "userId": "user_object_id",
+            "currentTier": 0,
+            "tier1": {
+              "status": "not_started",
+              "otpVerified": false,
+              "failedAttempts": 0
+            },
+            "tier2": {
+              "status": "not_started"
+            },
+            "tier3": {
+              "status": "not_started"
+            },
+            "createdAt": "2026-01-01T00:00:00.000Z",
+            "updatedAt": "2026-01-01T00:00:00.000Z"
+          }
+
+docs: "Returns the authenticated user's KYC document, creating a row if one does not exist yet (`UserKyc`: tiers, statuses, BVN-related Tier 1 fields, timestamps)."

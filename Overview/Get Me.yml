@@ -1,0 +1,60 @@
+info:
+  name: Get Me
+  type: http
+  seq: 1
+
+http:
+  method: GET
+  url: "{{baseUrl}}/me"
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Success
+    request:
+      url: ""
+      method: GET
+    response:
+      status: 200
+      statusText: OK
+      body:
+        type: text
+        data: |-
+          {
+            "success": true,
+            "data": {
+              "profile": {
+                "id": "user_object_id",
+                "email": "user@example.com",
+                "phoneNumber": "+2348000000000",
+                "firstName": "John",
+                "lastName": "Doe",
+                "fullName": "John Doe",
+                "username": "johndoe",
+                "avatarUrl": null,
+                "accountType": "peer"
+              },
+              "preferences": {
+                "interestEnabled": false,
+                "silentSavingsEnabled": false,
+                "biometricAuth": {
+                  "enabledForCurrentDevice": false,
+                  "matchedDeviceId": null,
+                  "currentDeviceTrusted": false,
+                  "hasRegisteredDevice": false,
+                  "reason": "No biometric device has been registered yet"
+                }
+              },
+              "trust": {
+                "currentScore": 0,
+                "scoreTier": "Bronze"
+              }
+            }
+          }
+
+docs: Returns the authenticated user's `/me` dashboard payload, including profile, preferences, trust score, wallet settings, payout methods, support, security, and menu metadata.

@@ -1,0 +1,85 @@
+info:
+  name: Tier 2 NIN Verification
+  type: http
+  seq: 7
+
+http:
+  method: POST
+  url: "{{baseUrl}}/kyc/tier2/nin/verification"
+  headers:
+    - name: Content-Type
+      value: application/json
+    - name: x-device-id
+      value: "{{deviceId}}"
+      disabled: true
+    - name: x-device-fingerprint
+      value: ""
+      disabled: true
+    - name: x-device-platform
+      value: ""
+      disabled: true
+    - name: x-device-model
+      value: ""
+      disabled: true
+  body:
+    type: json
+    data: |-
+      {
+        "nin": "12345678901",
+        "address": "2, Glover Street",
+        "city": "Lagos",
+        "state": "Lagos"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Success
+    request:
+      url: ""
+      method: POST
+    response:
+      status: 201
+      statusText: Created
+      body:
+        type: text
+        data: |-
+          {
+            "success": true,
+            "message": "KYC Tier 2 NIN verification successful"
+          }
+  - name: Conflict (NIN already used)
+    request:
+      url: ""
+      method: POST
+    response:
+      status: 409
+      statusText: Conflict
+      body:
+        type: text
+        data: |-
+          {
+            "statusCode": 409,
+            "message": "NIN is already used",
+            "error": "Conflict"
+          }
+
+docs: |-
+  Completes Tier 2 after liveness: verifies NIN with Dojah using the stored liveness selfie and Tier 1 names. Persists NIN and `tier2.address` (street/city/state).
+
+  Requires Tier 1 verified (`currentTier` >= 1 and `tier1.status` verified); otherwise `400` with `User has not verified tier 1`. Also requires `tier2.livenessVerified` from the Tier 2 liveness endpoint.
+
+  Validation:
+  - `nin` 11 digits
+  - `address`, `city`, `state` per DTO rules (see API.md)
+
+  Errors:
+  - `403` if Tier 2 already verified
+  - `409` if NIN already used by another user (`NIN is already used`)
+  - `400` if Tier 1 not verified (`User has not verified tier 1`)
+  - `400` if liveness not done (`User has not verified liveness`) or verification fails

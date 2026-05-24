@@ -1,0 +1,60 @@
+info:
+  name: Update Profile
+  type: http
+  seq: 1
+
+http:
+  method: PATCH
+  url: "{{baseUrl}}/me/profile"
+  headers:
+    - name: Content-Type
+      value: application/json
+  body:
+    type: json
+    data: |-
+      {
+        "firstName": "John",
+        "lastName": "Doe",
+        "username": "johndoe",
+        "avatarUrl": "https://example.com/avatar.png"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Success
+    request:
+      url: ""
+      method: PATCH
+    response:
+      status: 200
+      statusText: OK
+      body:
+        type: text
+        data: |-
+          {
+            "success": true,
+            "message": "Profile updated successfully",
+            "data": {
+              "id": "user_object_id",
+              "email": "user@example.com",
+              "phoneNumber": "+2348000000000",
+              "firstName": "John",
+              "lastName": "Doe",
+              "fullName": "John Doe",
+              "username": "johndoe",
+              "avatarUrl": "https://example.com/avatar.png",
+              "accountType": "peer"
+            }
+          }
+
+docs: |-
+  Updates the authenticated user's basic profile fields.
+
+  Validation:
+  - `username` may only contain letters, numbers, dots, and underscores.

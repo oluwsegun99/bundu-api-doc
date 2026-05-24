@@ -1,0 +1,50 @@
+info:
+  name: Unlock With Passcode
+  type: http
+  seq: 5
+
+http:
+  method: POST
+  url: "{{baseUrl}}/me/security/passcode/unlock"
+  headers:
+    - name: Content-Type
+      value: application/json
+  body:
+    type: json
+    data: |-
+      {
+        "passcode": "123456"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Success
+    request:
+      url: ""
+      method: POST
+    response:
+      status: 201
+      statusText: OK
+      body:
+        type: text
+        data: |-
+          {
+            "success": true,
+            "message": "Access unlocked successfully",
+            "data": {
+              "unlocked": true,
+              "passcodeSet": true
+            }
+          }
+
+docs: |-
+  Verifies the user's app passcode for unlock/access restoration.
+
+  Validation:
+  - `passcode` must be 6 digits

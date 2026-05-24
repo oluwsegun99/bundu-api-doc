@@ -1,0 +1,47 @@
+info:
+  name: Create Onboarding Session
+  type: http
+  seq: 1
+
+http:
+  method: POST
+  url: "{{baseUrl}}/onboarding/"
+  headers:
+    - name: Content-Type
+      value: application/json
+  body:
+    type: json
+    data: |-
+      {
+        "email": "user@example.com",
+        "firstName": "Ada",
+        "lastName": "Lovelace",
+        "phoneNumber": "+2348000000000"
+      }
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Success
+    request:
+      url: ""
+      method: POST
+    response:
+      status: 201
+      statusText: Created
+      body:
+        type: text
+        data: |-
+          {
+            "success": true,
+            "data": {
+              "sessionToken": "peer_onboarding_token",
+              "next": "verify-otp"
+            }
+          }
+
+docs: Starts peer onboarding and creates an onboarding session.

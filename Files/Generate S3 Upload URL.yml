@@ -1,0 +1,51 @@
+info:
+  name: Generate S3 Upload URL
+  type: http
+  seq: 1
+
+http:
+  method: POST
+  url: "{{baseUrl}}/files/upload-url"
+  headers:
+    - name: Content-Type
+      value: application/json
+  body:
+    type: json
+    data: |-
+      {
+        "fileName": "avatar.png",
+        "fileType": "image/png",
+        "folder": "avatars"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Success
+    request:
+      url: ""
+      method: POST
+    response:
+      status: 200
+      statusText: OK
+      body:
+        type: text
+        data: |-
+          {
+            "success": true,
+            "data": {
+              "key": "avatars/a1b2c3d4-e5f6-7890-abcd-ef1234567890.png",
+              "uploadUrl": "https://bucket.s3.eu-west-1.amazonaws.com/avatars/a1b2c3d4-e5f6-7890-abcd-ef1234567890.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&...",
+              "fileUrl": "https://your-bucket-name.s3.eu-west-1.amazonaws.com/avatars/a1b2c3d4-e5f6-7890-abcd-ef1234567890.png"
+            }
+          }
+
+docs: |-
+  Returns `key`, a short-lived presigned **`uploadUrl`** (PUT to S3, ~90s), and **`fileUrl`** for the object after upload. Allowed `fileType`: `image/jpeg`, `image/png`, `image/webp`, `application/pdf`. Client must PUT the file binary to `uploadUrl` with **`Content-Type` equal to `fileType`**. After upload, use **`data.key`** as the path after `/files/` on the DELETE request (edit that request’s URL).
+
+  Optional `folder` is normalized (slashes trimmed).

@@ -1,0 +1,84 @@
+info:
+  name: Tier 2 Liveness Verification
+  type: http
+  seq: 6
+
+http:
+  method: POST
+  url: "{{baseUrl}}/kyc/tier2/liveness/verification"
+  headers:
+    - name: x-device-id
+      value: "{{deviceId}}"
+      disabled: true
+    - name: x-device-fingerprint
+      value: ""
+      disabled: true
+    - name: x-device-platform
+      value: ""
+      disabled: true
+    - name: x-device-model
+      value: ""
+      disabled: true
+  body:
+    type: multipart-form
+    data:
+      - name: image
+        type: file
+        value: []
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Success
+    request:
+      url: ""
+      method: POST
+    response:
+      status: 201
+      statusText: Created
+      body:
+        type: text
+        data: |-
+          {
+            "success": true,
+            "message": "KYC Tier 2 Liveness verification successful",
+            "data": {
+              "next": "Verify NIN"
+            }
+          }
+  - name: Success (liveness already verified)
+    request:
+      url: ""
+      method: POST
+    response:
+      status: 201
+      statusText: Created
+      body:
+        type: text
+        data: |-
+          {
+            "success": true,
+            "message": "KYC Tier 2 liveness already verified",
+            "data": {
+              "next": "Verify NIN"
+            }
+          }
+
+docs: |-
+  Uploads a selfie as `multipart/form-data` field **`image`** (JPEG or PNG, max 5 MB). Runs Dojah liveness; on success sets `tier2.livenessVerified` and stores the image for the NIN step.
+
+  Requires Tier 1 verified (`currentTier` >= 1 and `tier1.status` verified); otherwise `400` with `User has not verified tier 1`.
+
+  Do not send `Content-Type: application/json`. Let the client set multipart boundaries automatically.
+
+  Optional device headers are stored on the verification attempt.
+
+  Errors:
+  - `403` if Tier 2 is already verified
+  - `400` if Tier 1 not verified (`User has not verified tier 1`)
+  - `400` if file invalid, liveness fails, or provider error

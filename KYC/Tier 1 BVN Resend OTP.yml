@@ -1,0 +1,42 @@
+info:
+  name: Tier 1 BVN Resend OTP
+  type: http
+  seq: 4
+
+http:
+  method: GET
+  url: "{{baseUrl}}/kyc/tier1/bvn/resend-otp"
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Success
+    request:
+      url: ""
+      method: GET
+    response:
+      status: 200
+      statusText: OK
+      body:
+        type: text
+        data: |-
+          {
+            "success": true,
+            "message": "KYC Tier 1 BVN verification OTP resend successful",
+            "data": {
+              "next": "Verify OTP",
+              "otp": "123456"
+            }
+          }
+
+docs: |-
+  Resends Tier 1 BVN verification OTP to `tier1.phoneNumber`, after BVN step is complete. Rate-limited using `tier1.otpNextResendAllowedAt` on the user KYC record (see `GET /kyc`). **`data`** includes **`otp`** on success.
+
+  Errors:
+  - `403` if Tier 1 is already verified
+  - `400` if no BVN/phone on file or resend cooldown is active

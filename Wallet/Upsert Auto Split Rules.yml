@@ -1,0 +1,62 @@
+info:
+  name: Upsert Auto Split Rules
+  type: http
+  seq: 4
+
+http:
+  method: PUT
+  url: "{{baseUrl}}/me/auto-split-rules"
+  headers:
+    - name: Content-Type
+      value: application/json
+  body:
+    type: json
+    data: |-
+      {
+        "rules": [
+          {
+            "name": "Emergency Fund",
+            "percentage": 20,
+            "destination": "vault_emergency",
+            "active": true
+          }
+        ]
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Success
+    request:
+      url: ""
+      method: PUT
+    response:
+      status: 200
+      statusText: OK
+      body:
+        type: text
+        data: |-
+          {
+            "success": true,
+            "message": "Auto split rules updated successfully",
+            "data": [
+              {
+                "name": "Emergency Fund",
+                "percentage": 20,
+                "destination": "vault_emergency",
+                "active": true
+              }
+            ]
+          }
+
+docs: |-
+  Replaces the user's auto split rules.
+
+  Validation:
+  - maximum 10 rules
+  - total percentage across rules cannot exceed 100

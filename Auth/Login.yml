@@ -1,0 +1,51 @@
+info:
+  name: Login
+  type: http
+  seq: 2
+
+http:
+  method: POST
+  url: "{{baseUrl}}/auth/login"
+  headers:
+    - name: Content-Type
+      value: application/json
+    - name: x-device-id
+      value: "{{deviceId}}"
+      disabled: true
+  body:
+    type: json
+    data: |-
+      {
+        "email": "user@example.com",
+        "password": "secret"
+      }
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Success
+    request:
+      url: ""
+      method: POST
+    response:
+      status: 201
+      statusText: OK
+      body:
+        type: text
+        data: |-
+          {
+            "success": true,
+            "message": "Successfully logged in",
+            "data": {
+              "accessToken": "jwt_access_token",
+              "refreshToken": "jwt_refresh_token",
+              "accessTokenExpires": 900,
+              "refreshTokenExpires": 1209600
+            }
+          }
+
+docs: Authenticates a regular user and returns access and refresh tokens.

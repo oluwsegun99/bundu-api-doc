@@ -1,0 +1,44 @@
+info:
+  name: Create Employee Onboarding Session
+  type: http
+  seq: 1
+
+http:
+  method: POST
+  url: "{{baseUrl}}/onboarding/employee/"
+  headers:
+    - name: Content-Type
+      value: application/json
+  body:
+    type: json
+    data: |-
+      {
+        "email": "employee@company.com",
+        "company": "{{companyId}}"
+      }
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Success
+    request:
+      url: ""
+      method: POST
+    response:
+      status: 201
+      statusText: Created
+      body:
+        type: text
+        data: |-
+          {
+            "success": true,
+            "data": {
+              "sessionToken": "employee_onboarding_token"
+            }
+          }
+
+docs: Starts employee onboarding for an existing corporate employer.

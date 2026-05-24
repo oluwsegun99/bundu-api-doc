@@ -1,0 +1,78 @@
+info:
+  name: Get Trust Score
+  type: http
+  seq: 1
+
+http:
+  method: GET
+  url: "{{baseUrl}}/me/trust-score"
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Success
+    request:
+      url: ""
+      method: GET
+    response:
+      status: 200
+      statusText: OK
+      body:
+        type: text
+        data: |-
+          {
+            "success": true,
+            "data": {
+              "currentScore": 0,
+              "scoreTier": "Bronze",
+              "lastUpdated": "2026-04-21T10:00:00.000Z",
+              "streakCount": 0,
+              "historicalTrend": [0],
+              "scoreRange": {
+                "minimum": 300,
+                "maximum": 850
+              },
+              "model": {
+                "name": "Bundu Alternative Trust Score",
+                "version": "1.0",
+                "formula": "Score = (S x 0.40) + (V x 0.30) + (G x 0.20) + (B x 0.10)"
+              },
+              "categoryBreakdown": {
+                "savingsConsistency": {
+                  "label": "Savings Consistency",
+                  "rawScore": 0,
+                  "normalizedScore": 0,
+                  "weight": 0.4,
+                  "weightedContribution": 0
+                },
+                "vaultCommitment": {
+                  "label": "Lock-Up Ratio",
+                  "rawScore": 0,
+                  "normalizedScore": 0,
+                  "weight": 0.3,
+                  "weightedContribution": 0
+                },
+                "groupReliability": {
+                  "label": "Group Savings Behavior",
+                  "rawScore": 0,
+                  "normalizedScore": 0,
+                  "weight": 0.2,
+                  "weightedContribution": 0
+                },
+                "budgetDiscipline": {
+                  "label": "Budget Adherence",
+                  "rawScore": 0,
+                  "normalizedScore": 0,
+                  "weight": 0.1,
+                  "weightedContribution": 0
+                }
+              }
+            }
+          }
+
+docs: Returns the alternative trust-score model, scoring factors, weighted breakdown, hooks, and suggested improvements.

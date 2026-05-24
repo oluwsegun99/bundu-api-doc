@@ -1,0 +1,41 @@
+opencollection: 1.0.0
+
+info:
+  name: Bundu API - Auth, Onboarding and Me Endpoints
+
+request:
+  auth:
+    type: bearer
+    token: "{{accessToken}}"
+  variables:
+    - name: baseUrl
+      value: http://localhost:3000
+    - name: accessToken
+      value: ""
+    - name: refreshToken
+      value: ""
+    - name: deviceId
+      value: ""
+    - name: onboardingToken
+      value: ""
+    - name: companyId
+      value: ""
+
+docs:
+  content: |-
+    Postman collection generated from the NestJS auth, onboarding, `/me`, `/kyc`, and `/files` (S3 presigned uploads) controllers in `src/modules/auth`, `src/modules/users`, `src/modules/kyc`, and `src/modules/s3-bucket`. Protected `/me`, `/kyc`, and `/files` requests expect a valid user access token unless cookie auth is used.
+
+    Collection variables:
+    - `baseUrl`: API base URL
+    - `accessToken`: User access token
+    - `refreshToken`: User refresh token
+    - `deviceId`: Optional device identifier for auth/logout flows
+    - `onboardingToken`: Peer onboarding session token
+    - `companyId`: Corporate employer id for employee onboarding
+  type: text/markdown
+bundled: false
+extensions:
+  bruno:
+    ignore:
+      - node_modules
+      - .git

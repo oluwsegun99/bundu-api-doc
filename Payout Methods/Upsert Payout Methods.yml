@@ -1,0 +1,62 @@
+info:
+  name: Upsert Payout Methods
+  type: http
+  seq: 2
+
+http:
+  method: PUT
+  url: "{{baseUrl}}/me/payout-methods"
+  headers:
+    - name: Content-Type
+      value: application/json
+  body:
+    type: json
+    data: |-
+      {
+        "methods": [
+          {
+            "type": "bank_account",
+            "label": "GTBank",
+            "accountNumberMasked": "******1234",
+            "isDefault": true
+          }
+        ]
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Success
+    request:
+      url: ""
+      method: PUT
+    response:
+      status: 200
+      statusText: OK
+      body:
+        type: text
+        data: |-
+          {
+            "success": true,
+            "message": "Payout methods updated successfully",
+            "data": [
+              {
+                "type": "bank_account",
+                "label": "GTBank",
+                "accountNumberMasked": "******1234",
+                "isDefault": true
+              }
+            ]
+          }
+
+docs: |-
+  Replaces the user's payout methods.
+
+  Validation:
+  - maximum 10 methods
+  - only one method can be marked as default

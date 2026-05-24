@@ -1,0 +1,36 @@
+info:
+  name: Delete S3 File
+  type: http
+  seq: 2
+
+http:
+  method: DELETE
+  url: "{{baseUrl}}/files/avatars/example-replace-with-key-from-upload-url.png"
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Success
+    request:
+      url: ""
+      method: DELETE
+    response:
+      status: 200
+      statusText: OK
+      body:
+        type: text
+        data: |-
+          {
+            "success": true,
+            "message": "File deleted successfully"
+          }
+
+docs: |-
+  Deletes the object for the S3 **key**. **Edit this request’s URL** so everything after `/files/` equals **`data.key`** from Generate S3 Upload URL (nested keys use multiple path segments).
+
+  S3 deletes are **idempotent** — missing keys still succeed at S3 unless the API/AWS returns another error.

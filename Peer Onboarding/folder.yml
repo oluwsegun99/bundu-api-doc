@@ -1,0 +1,7 @@
+info:
+  name: Peer Onboarding
+  type: folder
+  seq: 2
+
+request:
+  auth: inherit

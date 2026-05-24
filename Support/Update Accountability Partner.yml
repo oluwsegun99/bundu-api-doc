@@ -1,0 +1,51 @@
+info:
+  name: Update Accountability Partner
+  type: http
+  seq: 4
+
+http:
+  method: PUT
+  url: "{{baseUrl}}/me/accountability-partner"
+  headers:
+    - name: Content-Type
+      value: application/json
+  body:
+    type: json
+    data: |-
+      {
+        "fullName": "Jane Doe",
+        "email": "jane@example.com",
+        "phoneNumber": "+2348000000001",
+        "status": "pending"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Success
+    request:
+      url: ""
+      method: PUT
+    response:
+      status: 200
+      statusText: OK
+      body:
+        type: text
+        data: |-
+          {
+            "success": true,
+            "message": "Accountability partner updated successfully",
+            "data": {
+              "fullName": "Jane Doe",
+              "email": "jane@example.com",
+              "phoneNumber": "+2348000000001",
+              "status": "pending"
+            }
+          }
+
+docs: Creates or updates the user's accountability partner.

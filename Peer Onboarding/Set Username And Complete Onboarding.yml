@@ -1,0 +1,53 @@
+info:
+  name: Set Username And Complete Onboarding
+  type: http
+  seq: 5
+
+http:
+  method: POST
+  url: "{{baseUrl}}/onboarding/set-username"
+  headers:
+    - name: Content-Type
+      value: application/json
+    - name: x-onboarding-token
+      value: "{{onboardingToken}}"
+    - name: x-device-id
+      value: "{{deviceId}}"
+      disabled: true
+  body:
+    type: json
+    data: |-
+      {
+        "username": "adalovelace"
+      }
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Success
+    request:
+      url: ""
+      method: POST
+    response:
+      status: 201
+      statusText: Created
+      body:
+        type: text
+        data: |-
+          {
+            "success": true,
+            "message": "Account created successfully",
+            "data": {
+              "accessToken": "jwt_access_token",
+              "refreshToken": "jwt_refresh_token",
+              "accessTokenExpires": 900,
+              "refreshTokenExpires": 1209600,
+              "username": "adalovelace"
+            }
+          }
+
+docs: Completes peer onboarding and returns regular user tokens.

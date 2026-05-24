@@ -1,0 +1,34 @@
+info:
+  name: Get Cycle Transparency
+  type: http
+  seq: 2
+
+http:
+  method: GET
+  url: "{{baseUrl}}/me/cycle-transparency"
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Success
+    request:
+      url: ""
+      method: GET
+    response:
+      status: 200
+      statusText: OK
+      body:
+        type: text
+        data: |-
+          {
+            "success": true,
+            "data": {
+              "completedCycles": 0,
+              "paymentHistoryLabel": "Payment History"
+            }
+          }

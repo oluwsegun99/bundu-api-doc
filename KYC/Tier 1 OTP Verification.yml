@@ -1,0 +1,46 @@
+info:
+  name: Tier 1 OTP Verification
+  type: http
+  seq: 5
+
+http:
+  method: POST
+  url: "{{baseUrl}}/kyc/tier1/otp/verification"
+  headers:
+    - name: Content-Type
+      value: application/json
+  body:
+    type: json
+    data: |-
+      {
+        "otp": "123456"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Success
+    request:
+      url: ""
+      method: POST
+    response:
+      status: 201
+      statusText: Created
+      body:
+        type: text
+        data: |-
+          {
+            "success": true,
+            "message": "KYC Tier 1 verification successful"
+          }
+
+docs: |-
+  Completes Tier 1 after BVN verification by validating the 6-digit OTP (Redis-backed).
+
+  Validation:
+  - `otp` must be 6 digits

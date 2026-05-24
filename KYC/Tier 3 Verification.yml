@@ -1,0 +1,62 @@
+info:
+  name: Tier 3 Verification
+  type: http
+  seq: 8
+
+http:
+  method: POST
+  url: "{{baseUrl}}/kyc/tier3/verification"
+  headers:
+    - name: Content-Type
+      value: application/json
+    - name: x-device-id
+      value: "{{deviceId}}"
+      disabled: true
+    - name: x-device-fingerprint
+      value: ""
+      disabled: true
+    - name: x-device-platform
+      value: ""
+      disabled: true
+    - name: x-device-model
+      value: ""
+      disabled: true
+  body:
+    type: json
+    data: |-
+      {
+        "utilityBillImageUrl": "https://cdn.example.com/bills/statement.jpg",
+        "ninImageUrl": "https://cdn.example.com/nin/front.jpg"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Success
+    request:
+      url: ""
+      method: POST
+    response:
+      status: 200
+      statusText: OK
+      body:
+        type: text
+        data: |-
+          {
+            "success": true,
+            "message": "KYC Tier 3 verification successful"
+          }
+
+docs: |-
+  Tier 3: Dojah utility bill analysis on **`utilityBillImageUrl`** (address must match `tier2.address`); Dojah document analysis on **`ninImageUrl`** (`overall_status` must be 1). Creates `KycDocument` rows (`proof_of_address`, `nin_document`), sets **`tier3`** verified and **`currentTier`** 3.
+
+  Requires Tier 2 verified. Optional device headers stored on verification attempt.
+
+  Validation: both URL fields required.
+
+  Errors: `400` Tier 2 not verified, bill/NIN analysis or address mismatch; `403` Tier 3 already verified.

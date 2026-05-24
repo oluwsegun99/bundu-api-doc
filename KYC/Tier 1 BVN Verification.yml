@@ -1,0 +1,85 @@
+info:
+  name: Tier 1 BVN Verification
+  type: http
+  seq: 3
+
+http:
+  method: POST
+  url: "{{baseUrl}}/kyc/tier1/bvn/verification"
+  headers:
+    - name: Content-Type
+      value: application/json
+    - name: x-device-id
+      value: "{{deviceId}}"
+      disabled: true
+    - name: x-device-fingerprint
+      value: ""
+      disabled: true
+    - name: x-device-platform
+      value: ""
+      disabled: true
+    - name: x-device-model
+      value: ""
+      disabled: true
+  body:
+    type: json
+    data: |-
+      {
+        "bvn": "12345678901",
+        "dateOfBirth": "1990-01-15"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Success (new BVN verification)
+    request:
+      url: ""
+      method: POST
+    response:
+      status: 201
+      statusText: Created
+      body:
+        type: text
+        data: |-
+          {
+            "success": true,
+            "message": "KYC Tier 1 BVN verification successful",
+            "data": {
+              "next": "Verify OTP",
+              "otp": "123456"
+            }
+          }
+  - name: Success (BVN already stored, OTP pending)
+    request:
+      url: ""
+      method: POST
+    response:
+      status: 201
+      statusText: Created
+      body:
+        type: text
+        data: |-
+          {
+            "success": true,
+            "message": "User already has bvn data",
+            "data": {
+              "next": "Verify OTP"
+            }
+          }
+
+docs: |-
+  Looks up BVN, validates date of birth, stores Tier 1 pending data, generates a Redis-backed OTP, and sends it via SMS. On successful **initial** verification, **`data`** includes **`otp`** (also useful for sandbox/testing—in production, rely on SMS and avoid logging the code).
+
+  Optional headers mirror `/me/devices` device context and are stored on the verification attempt.
+
+  Validation:
+  - `bvn` must be 11 digits
+  - `dateOfBirth` must be an ISO 8601 date string
+
+  If this user already has BVN pending OTP, response returns **`next`** only (**no new `otp`**) until you use Resend OTP or complete verification.

@@ -1,0 +1,52 @@
+info:
+  name: Update Preferences
+  type: http
+  seq: 2
+
+http:
+  method: PATCH
+  url: "{{baseUrl}}/me/preferences"
+  headers:
+    - name: Content-Type
+      value: application/json
+  body:
+    type: json
+    data: |-
+      {
+        "interestEnabled": true,
+        "silentSavingsEnabled": false
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Success
+    request:
+      url: ""
+      method: PATCH
+    response:
+      status: 200
+      statusText: OK
+      body:
+        type: text
+        data: |-
+          {
+            "success": true,
+            "message": "Preferences updated successfully",
+            "data": {
+              "interestEnabled": true,
+              "silentSavingsEnabled": false,
+              "biometricAuth": {
+                "enabledForCurrentDevice": false,
+                "matchedDeviceId": null,
+                "currentDeviceTrusted": false,
+                "hasRegisteredDevice": false,
+                "reason": "No biometric device has been registered yet"
+              }
+            }
+          }

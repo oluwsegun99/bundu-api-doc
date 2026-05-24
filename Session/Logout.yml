@@ -1,0 +1,54 @@
+info:
+  name: Logout
+  type: http
+  seq: 1
+
+http:
+  method: POST
+  url: "{{baseUrl}}/me/logout"
+  headers:
+    - name: Content-Type
+      value: application/json
+    - name: x-device-id
+      value: "{{deviceId}}"
+      disabled: true
+    - name: x-refresh-token
+      value: "{{refreshToken}}"
+      disabled: true
+  body:
+    type: json
+    data: |-
+      {
+        "refreshToken": "{{refreshToken}}"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Success
+    request:
+      url: ""
+      method: POST
+    response:
+      status: 200
+      statusText: OK
+      body:
+        type: text
+        data: |-
+          {
+            "success": true,
+            "message": "Logged out successfully"
+          }
+
+docs: |-
+  Logs the user out by invalidating the refresh-token session.
+
+  Required:
+  - refresh token supplied in either body or `x-refresh-token`
+  Optional:
+  - `x-device-id` to target a specific session

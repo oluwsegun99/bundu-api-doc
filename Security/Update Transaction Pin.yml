@@ -1,0 +1,52 @@
+info:
+  name: Update Transaction Pin
+  type: http
+  seq: 2
+
+http:
+  method: PUT
+  url: "{{baseUrl}}/me/security/transaction-pin"
+  headers:
+    - name: Content-Type
+      value: application/json
+  body:
+    type: json
+    data: |-
+      {
+        "currentPin": "1234",
+        "newPin": "5678"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Success
+    request:
+      url: ""
+      method: PUT
+    response:
+      status: 200
+      statusText: OK
+      body:
+        type: text
+        data: |-
+          {
+            "success": true,
+            "message": "Transaction PIN updated successfully",
+            "data": {
+              "transactionPinSet": true
+            }
+          }
+
+docs: |-
+  Creates or updates the user's transaction PIN.
+
+  Validation:
+  - `newPin` must be 4 digits
+  - `currentPin` must be 4 digits when provided
+  - `currentPin` is required if a PIN already exists

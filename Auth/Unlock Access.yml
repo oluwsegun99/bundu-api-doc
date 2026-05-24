@@ -1,0 +1,51 @@
+info:
+  name: Unlock Access
+  type: http
+  seq: 5
+
+http:
+  method: POST
+  url: "{{baseUrl}}/auth/unlock-access"
+  headers:
+    - name: Content-Type
+      value: application/json
+    - name: x-device-id
+      value: "{{deviceId}}"
+      disabled: true
+  body:
+    type: json
+    data: |-
+      {
+        "passcode": "123456"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Success
+    request:
+      url: ""
+      method: POST
+    response:
+      status: 201
+      statusText: Created
+      body:
+        type: text
+        data: |-
+          {
+            "success": true,
+            "message": "Access unlocked successfully",
+            "data": {
+              "accessToken": "jwt_access_token",
+              "refreshToken": "jwt_refresh_token",
+              "accessTokenExpires": 900,
+              "refreshTokenExpires": 1209600
+            }
+          }
+
+docs: Verifies the user's 6-digit passcode and reissues fresh token data from the active authenticated session.

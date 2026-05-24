@@ -1,0 +1,55 @@
+info:
+  name: Create Invite Link
+  type: http
+  seq: 2
+
+http:
+  method: POST
+  url: "{{baseUrl}}/me/invite-links"
+  headers:
+    - name: Content-Type
+      value: application/json
+  body:
+    type: json
+    data: |-
+      {
+        "inviteeEmail": "friend@example.com",
+        "expiresInDays": 7
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Success
+    request:
+      url: ""
+      method: POST
+    response:
+      status: 201
+      statusText: Created
+      body:
+        type: text
+        data: |-
+          {
+            "success": true,
+            "message": "Invite link created successfully",
+            "data": {
+              "code": "BUNDU-ABCDEFGH",
+              "status": "pending",
+              "inviteeEmail": "friend@example.com",
+              "expiresAt": "2026-04-28T10:00:00.000Z",
+              "createdAt": "2026-04-21T10:00:00.000Z"
+            }
+          }
+
+docs: |-
+  Creates a new invite link.
+
+  Validation:
+  - `inviteeEmail` must be a valid email if supplied
+  - `expiresInDays` must be between 1 and 30

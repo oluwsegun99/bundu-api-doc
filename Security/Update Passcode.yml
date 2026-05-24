@@ -1,0 +1,52 @@
+info:
+  name: Update Passcode
+  type: http
+  seq: 4
+
+http:
+  method: PUT
+  url: "{{baseUrl}}/me/security/passcode"
+  headers:
+    - name: Content-Type
+      value: application/json
+  body:
+    type: json
+    data: |-
+      {
+        "currentPasscode": "123456",
+        "newPasscode": "567890"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Success
+    request:
+      url: ""
+      method: PUT
+    response:
+      status: 200
+      statusText: OK
+      body:
+        type: text
+        data: |-
+          {
+            "success": true,
+            "message": "Passcode updated successfully",
+            "data": {
+              "passcodeSet": true
+            }
+          }
+
+docs: |-
+  Creates or updates the user's app passcode.
+
+  Validation:
+  - `newPasscode` must be 6 digits
+  - `currentPasscode` must be 6 digits when provided
+  - `currentPasscode` is required if a passcode already exists

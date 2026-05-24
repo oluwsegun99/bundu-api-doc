@@ -1,0 +1,43 @@
+info:
+  name: Verify Onboarding OTP
+  type: http
+  seq: 2
+
+http:
+  method: POST
+  url: "{{baseUrl}}/onboarding/verify-otp"
+  headers:
+    - name: Content-Type
+      value: application/json
+    - name: x-onboarding-token
+      value: "{{onboardingToken}}"
+  body:
+    type: json
+    data: |-
+      {
+        "otp": "123456"
+      }
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Success
+    request:
+      url: ""
+      method: POST
+    response:
+      status: 201
+      statusText: Created
+      body:
+        type: text
+        data: |-
+          {
+            "success": true,
+            "data": {
+              "next": "set-password"
+            }
+          }

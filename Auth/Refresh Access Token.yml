@@ -1,0 +1,43 @@
+info:
+  name: Refresh Access Token
+  type: http
+  seq: 1
+
+http:
+  method: GET
+  url: "{{baseUrl}}/auth/refresh"
+  headers:
+    - name: x-refresh-token
+      value: "{{refreshToken}}"
+    - name: x-device-id
+      value: "{{deviceId}}"
+      disabled: true
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Success
+    request:
+      url: ""
+      method: GET
+    response:
+      status: 200
+      statusText: OK
+      body:
+        type: text
+        data: |-
+          {
+            "success": true,
+            "data": {
+              "accessToken": "jwt_access_token",
+              "refreshToken": "jwt_refresh_token",
+              "accessTokenExpires": 900,
+              "refreshTokenExpires": 1209600
+            }
+          }
+
+docs: Refreshes a regular-user access token using the refresh token header.

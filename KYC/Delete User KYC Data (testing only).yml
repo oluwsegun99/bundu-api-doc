@@ -1,0 +1,47 @@
+info:
+  name: Delete User KYC Data (testing only)
+  type: http
+  seq: 2
+
+http:
+  method: DELETE
+  url: "{{baseUrl}}/kyc"
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Success
+    request:
+      url: ""
+      method: DELETE
+    response:
+      status: 200
+      statusText: OK
+      body:
+        type: text
+        data: |-
+          {
+            "success": true,
+            "message": "User KYC data deleted successfully"
+          }
+  - name: No KYC record
+    request:
+      url: ""
+      method: DELETE
+    response:
+      status: 404
+      statusText: Not Found
+      body:
+        type: text
+        data: |-
+          {
+            "statusCode": 404,
+            "message": "User KYC data not found"
+          }
+
+docs: "**Testing only:** deletes the authenticated user's `UserKyc` document when it exists. This endpoint **will be removed** after testing is finished—do not rely on it in production integrations."
