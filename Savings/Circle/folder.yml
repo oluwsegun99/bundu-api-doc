@@ -1,0 +1,7 @@
+info:
+  name: Circle
+  type: folder
+  seq: 1
+
+request:
+  auth: inherit

@@ -1,0 +1,31 @@
+info:
+  name: Activate Circle Group
+  type: http
+  seq: 5
+
+http:
+  method: POST
+  url: "{{baseUrl}}/savings/circle/group/activate"
+  headers:
+    - name: Content-Type
+      value: application/json
+  body:
+    type: json
+    data: |-
+      {
+        "groupId": "REPLACE_WITH_CIRCLE_GROUP_OBJECT_ID",
+        "startDate": "2026-06-01T09:00:00.000Z",
+        "adminPayoutAssignments": [
+          { "memberId": "REPLACE_MEMBERSHIP_ID", "payoutPosition": 1 },
+          { "memberId": "REPLACE_MEMBERSHIP_ID", "payoutPosition": 2 }
+        ]
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+docs: Captain-only when roster full. Omit `adminPayoutAssignments` unless payoutPolicy is ADMIN_ASSIGNED (then required — membership `_id` per row, positions 1..N).

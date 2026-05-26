@@ -1,0 +1,32 @@
+info:
+  name: Create Circle Group
+  type: http
+  seq: 1
+
+http:
+  method: POST
+  url: "{{baseUrl}}/savings/circle/group"
+  headers:
+    - name: Content-Type
+      value: application/json
+  body:
+    type: json
+    data: |-
+      {
+        "name": "Friday Circle",
+        "description": "Optional description",
+        "contributionAmount": 500000,
+        "frequency": "MONTHLY",
+        "numberOfMembers": 5,
+        "payoutPolicy": "FIXED_ORDER",
+        "gracePeriodHours": 48
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+docs: "Creates a circle savings group. Requires Tier 1 KYC. `frequency`: DAILY | WEEKLY | MONTHLY. `payoutPolicy` optional: FIXED_ORDER | RANDOMIZED_ON_ACTIVATION | ADMIN_ASSIGNED."

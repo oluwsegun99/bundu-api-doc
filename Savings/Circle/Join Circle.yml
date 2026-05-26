@@ -1,0 +1,26 @@
+info:
+  name: Join Circle
+  type: http
+  seq: 4
+
+http:
+  method: POST
+  url: "{{baseUrl}}/savings/circle/members/join"
+  headers:
+    - name: Content-Type
+      value: application/json
+  body:
+    type: json
+    data: |-
+      {
+        "membershipId": "REPLACE_WITH_YOUR_INVITED_MEMBERSHIP_OBJECT_ID"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+docs: Authenticated invitee accepts invite (user must match membership).
