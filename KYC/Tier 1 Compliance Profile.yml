@@ -1,0 +1,69 @@
+info:
+  name: Tier 1 Compliance Profile
+  type: http
+  seq: 6
+
+http:
+  method: POST
+  url: "{{baseUrl}}/kyc/tier1/compliance-profile"
+  headers:
+    - name: Content-Type
+      value: application/json
+  body:
+    type: json
+    data: |-
+      {
+        "profile": {
+          "employmentType": "employed",
+          "sourceOfIncome": "salary"
+        },
+        "nextOfKin": {
+          "firstName": "Jane",
+          "middleName": "Ada",
+          "lastName": "Doe",
+          "age": 45,
+          "gender": "female",
+          "relationship": "Mother",
+          "contactNumber": "08012345678"
+        },
+        "pepStatus": false
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Success
+    request:
+      url: ""
+      method: POST
+    response:
+      status: 201
+      statusText: Created
+      body:
+        type: text
+        data: |-
+          {
+            "success": true,
+            "message": "KYC Tier 1 compliance profile completed successfully"
+          }
+
+docs: |-
+  Completes Tier 1 after OTP verification: employment/source-of-income profile, next of kin, and PEP status. On success sets `tier1.status` to `verified`, `tier1.verifiedAt`, `currentTier` to 1, and persists `complianceProfile`, `nextOfKin`, and `pepStatus`.
+
+  Prerequisites:
+  - `tier1.otpVerified` must be `true`; otherwise `400` with `User has not verified BVN`
+
+  Validation:
+  - `profile.employmentType`: `employed`, `self_employed`, `freelancer`, `student`, `business_owner`, `unemployed`
+  - `profile.sourceOfIncome`: `salary`, `business`, `side_hustle`, `investments`, `family_support`, `other`
+  - `nextOfKin`: `firstName`, `lastName`, `age`, `gender` (`male`/`female`), `relationship` (letters only), `contactNumber` (11 digits); `middleName` optional
+  - `pepStatus`: boolean
+
+  Errors:
+  - `403` if Tier 1 is already verified
+  - `400` if OTP not verified or validation fails
