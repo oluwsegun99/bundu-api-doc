@@ -40,7 +40,7 @@ examples:
           }
 
 docs: |-
-  Completes Tier 1 after BVN verification by validating the 6-digit OTP (Redis-backed).
+  Validates the 6-digit OTP (Redis-backed) after BVN verification and sets `tier1.otpVerified` to `true`. Tier 1 is fully verified only after `POST /kyc/tier1/compliance-profile`.
 
   Validation:
   - `otp` must be 6 digits

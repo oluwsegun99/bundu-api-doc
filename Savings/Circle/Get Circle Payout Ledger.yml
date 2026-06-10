@@ -1,0 +1,26 @@
+info:
+  name: Get Circle Payout Ledger
+  type: http
+  seq: 7
+
+http:
+  method: GET
+  url: "{{baseUrl}}/savings/circle/payout/ledger"
+  headers:
+    - name: Content-Type
+      value: application/json
+  body:
+    type: json
+    data: |-
+      {
+        "groupId": "REPLACE_WITH_CIRCLE_GROUP_OBJECT_ID"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+docs: Captain-only. Returns payout ledger rows for a circle the caller created (`createdBy`). Populates recipient name and cycle number. Uses GET with JSON body.

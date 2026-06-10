@@ -1,7 +1,7 @@
 opencollection: 1.0.0
 
 info:
-  name: Bundu API - Auth, Onboarding and Me Endpoints
+  name: Bundu API - Auth, Onboarding and Me Endpoints - 1
 
 request:
   auth:
@@ -23,7 +23,7 @@ request:
 
 docs:
   content: |-
-    Postman collection generated from the NestJS auth, onboarding, `/me`, `/kyc`, and `/files` (S3 presigned uploads) controllers in `src/modules/auth`, `src/modules/users`, `src/modules/kyc`, and `src/modules/s3-bucket`. Protected `/me`, `/kyc`, and `/files` requests expect a valid user access token unless cookie auth is used.
+    Postman collection generated from the NestJS auth, onboarding, `/me`, `/kyc`, `/files` (S3 presigned uploads), and `/savings` controllers in `src/modules/auth`, `src/modules/users`, `src/modules/kyc`, `src/modules/s3-bucket`, and `src/modules/savings`. Protected `/me`, `/kyc`, `/files`, and `/savings` requests expect a valid user access token unless cookie auth is used.
 
     Collection variables:
     - `baseUrl`: API base URL
