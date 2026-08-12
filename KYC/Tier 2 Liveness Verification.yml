@@ -4,8 +4,8 @@ info:
   seq: 7
 
 http:
-  method: POST
-  url: "{{baseUrl}}/kyc/tier2/liveness/verification"
+  method: GET
+  url: "{{baseUrl}}/kyc/tier2/liveness/verification/{{livenessSessionId}}"
   headers:
     - name: x-device-id
       value: "{{deviceId}}"
@@ -19,12 +19,6 @@ http:
     - name: x-device-model
       value: ""
       disabled: true
-  body:
-    type: multipart-form
-    data:
-      - name: image
-        type: file
-        value: []
   auth: inherit
 
 settings:
@@ -37,10 +31,10 @@ examples:
   - name: Success
     request:
       url: ""
-      method: POST
+      method: GET
     response:
-      status: 201
-      statusText: Created
+      status: 200
+      statusText: OK
       body:
         type: text
         data: |-
@@ -54,10 +48,10 @@ examples:
   - name: Success (liveness already verified)
     request:
       url: ""
-      method: POST
+      method: GET
     response:
-      status: 201
-      statusText: Created
+      status: 200
+      statusText: OK
       body:
         type: text
         data: |-
@@ -70,15 +64,14 @@ examples:
           }
 
 docs: |-
-  Uploads a selfie as `multipart/form-data` field **`image`** (JPEG or PNG, max 5 MB). Runs Dojah liveness; on success sets `tier2.livenessVerified` and stores the image for the NIN step.
+  Completes Tier 2 liveness after the user finishes capture on the Parkway `frontendUrl` from **Tier 2 Liveness Initialization**. Fetches Parkway session results; on pass (confidence >= 70%) sets `tier2.livenessVerified` and stores the audit image for the NIN step.
 
-  Requires Tier 1 verified (`currentTier` >= 1 and `tier1.status` verified); otherwise `400` with `User has not verified tier 1`.
-
-  Do not send `Content-Type: application/json`. Let the client set multipart boundaries automatically.
+  Requires Tier 1 verified (`currentTier` >= 1 and `tier1.status` verified); otherwise `400` with `User has not verified tier 1`. `sessionId` must match `tier2.livenessSessionId` from initialization; otherwise `400` with `Invalid liveness session ID`.
 
   Optional device headers are stored on the verification attempt.
 
   Errors:
   - `403` if Tier 2 is already verified
   - `400` if Tier 1 not verified (`User has not verified tier 1`)
-  - `400` if file invalid, liveness fails, or provider error
+  - `400` if session ID invalid or liveness fails (`Liveness verification failed`)
+  - `500` if Parkway is unavailable

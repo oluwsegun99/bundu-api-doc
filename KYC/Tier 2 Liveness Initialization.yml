@@ -1,0 +1,68 @@
+info:
+  name: Tier 2 Liveness Initialization
+  type: http
+  seq: 7
+
+http:
+  method: POST
+  url: "{{baseUrl}}/kyc/tier2/liveness/initialization"
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Success
+    request:
+      url: ""
+      method: POST
+    response:
+      status: 201
+      statusText: Created
+      body:
+        type: text
+        data: |-
+          {
+            "success": true,
+            "message": "KYC Tier 2 liveness check successfully initialized",
+            "data": {
+              "next": "Verify Liveness",
+              "sessionId": "8b0647ab-07ea-4606-96f2-b3ac9ea209fc",
+              "frontendUrl": "https://awsfacialclient.parkwayprojects.xyz/?sessionId=8b0647ab-07ea-4606-96f2-b3ac9ea209fc"
+            }
+          }
+  - name: Success (liveness already verified)
+    request:
+      url: ""
+      method: POST
+    response:
+      status: 201
+      statusText: Created
+      body:
+        type: text
+        data: |-
+          {
+            "success": true,
+            "message": "KYC Tier 2 liveness already verified",
+            "data": {
+              "next": "Verify NIN"
+            }
+          }
+
+docs: |-
+  Initializes Tier 2 liveness via Parkway AWS. Creates a liveness session and returns `sessionId` and `frontendUrl` for the client to open in a WebView or browser.
+
+  Requires Tier 1 verified (`currentTier` >= 1 and `tier1.status` verified); otherwise `400` with `User has not verified tier 1`.
+
+  Client flow:
+  1. Call this endpoint and store `data.sessionId` (set collection variable `livenessSessionId`).
+  2. Open `data.frontendUrl` so the user completes face capture.
+  3. Call **Tier 2 Liveness Verification** with the same `sessionId`.
+
+  Errors:
+  - `403` if Tier 2 is already verified
+  - `400` if Tier 1 not verified (`User has not verified tier 1`)
+  - `500` if Parkway liveness initialization fails
