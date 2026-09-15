@@ -1,0 +1,48 @@
+info:
+  name: Get Wallet Balance
+  type: http
+  seq: 1
+
+http:
+  method: GET
+  url: "{{baseUrl}}/wallets/balance?currency=NGN"
+  params:
+    - name: currency
+      value: NGN
+      type: query
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Success
+    request:
+      url: ""
+      method: GET
+    response:
+      status: 200
+      statusText: OK
+      body:
+        type: text
+        data: |-
+          {
+            "success": true,
+            "data": {
+              "walletId": "507f1f77bcf86cd799439011",
+              "availableBalance": 5000,
+              "ledgerBalance": 7500,
+              "currency": "NGN"
+            }
+          }
+
+docs: |-
+  Returns the authenticated user's individual wallet balance for the requested currency. Creates the wallet with zero balances if it does not exist yet.
+
+  Query:
+  - `currency` (required): `NGN`
+
+  Tip: copy `data.walletId` into the `walletId` collection variable before calling Get Wallet Transactions.

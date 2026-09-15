@@ -1,0 +1,89 @@
+info:
+  name: Get Wallet Transactions
+  type: http
+  seq: 2
+
+http:
+  method: GET
+  url: "{{baseUrl}}/wallets/{{walletId}}/transactions?take=20"
+  params:
+    - name: cursor
+      value: ""
+      type: query
+      description: Optional. Transaction id from the previous page's `cursor` field.
+      disabled: true
+    - name: take
+      value: "20"
+      type: query
+      description: Optional page size (1-100, default 20).
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Success
+    request:
+      url: ""
+      method: GET
+    response:
+      status: 200
+      statusText: OK
+      body:
+        type: text
+        data: |-
+          {
+            "success": true,
+            "data": {
+              "transactions": [
+                {
+                  "transactionId": "507f1f77bcf86cd799439012",
+                  "reference": "BD-a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+                  "type": "transfer",
+                  "amount": 1000,
+                  "sourceWalletId": "507f1f77bcf86cd799439013",
+                  "destinationWalletId": "507f1f77bcf86cd799439011",
+                  "sourceCurrency": "NGN",
+                  "destinationCurrency": "NGN",
+                  "exchangeRate": 1,
+                  "status": "successful",
+                  "isReversal": false,
+                  "reversalOf": null,
+                  "createdAt": "2026-01-15T10:30:00.000Z",
+                  "direction": "inbound"
+                },
+                {
+                  "transactionId": "507f1f77bcf86cd799439014",
+                  "reference": "BD-b2c3d4e5-f6a7-8901-bcde-f12345678901",
+                  "type": "withdrawal",
+                  "amount": 500,
+                  "sourceWalletId": "507f1f77bcf86cd799439011",
+                  "destinationWalletId": null,
+                  "sourceCurrency": "NGN",
+                  "destinationCurrency": "NGN",
+                  "exchangeRate": 1,
+                  "status": "successful",
+                  "isReversal": false,
+                  "reversalOf": null,
+                  "createdAt": "2026-01-14T08:00:00.000Z",
+                  "direction": "outbound"
+                }
+              ],
+              "hasNextPage": true,
+              "cursor": "507f1f77bcf86cd799439014",
+              "totalCount": 24
+            }
+          }
+
+docs: |-
+  Returns a cursor-paginated list of transactions where the wallet is either the source or destination. Each item includes `direction`: `inbound` when this wallet is the destination, `outbound` when it is the source.
+
+  Path:
+  - `walletId`: must belong to the authenticated user and be an individual wallet
+
+  Query:
+  - `cursor` (optional): pass the `cursor` value from the previous response to fetch the next page
+  - `take` (optional): page size, default `20`, max `100`
