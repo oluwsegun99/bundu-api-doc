@@ -1,20 +1,20 @@
 info:
   name: Get User Circles
   type: http
-  seq: 6
+  seq: 10
 
 http:
   method: GET
-  url: "{{baseUrl}}/savings/user/circles"
-  headers:
-    - name: Content-Type
-      value: application/json
-  body:
-    type: json
-    data: |-
-      {
-        "status": "ACTIVE"
-      }
+  url: "{{baseUrl}}/savings/user/circles?take=20"
+  params:
+    - name: cursor
+      value: ""
+      type: query
+      description: Optional; membership _id from previous page
+      disabled: true
+    - name: take
+      value: "20"
+      type: query
   auth: inherit
 
 settings:
@@ -22,5 +22,47 @@ settings:
   timeout: 0
   followRedirects: true
   maxRedirects: 5
+  forwardAuthorizationHeader: false
 
-docs: "Lists circle groups for the authenticated user. `status`: ACTIVE | COMPLETED. ACTIVE returns ACTIVE memberships in ACTIVE groups; COMPLETED returns COMPLETED memberships in COMPLETED groups. Uses GET with JSON body."
+examples:
+  - name: Success
+    request:
+      url: ""
+      method: GET
+    response:
+      status: 200
+      statusText: OK
+      headers:
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+            "success": true,
+            "data": {
+              "items": [
+                {
+                  "groupId": "66f000000000000000000001",
+                  "name": "Friday Circle",
+                  "contributionAmount": 500000,
+                  "frequency": "MONTHLY",
+                  "status": "ACTIVE",
+                  "expectedMemberCount": 5,
+                  "currentMemberCount": 5,
+                  "members": [{ "name": "Jane Doe" }],
+                  "currentCycle": {
+                    "cycleNumber": 1,
+                    "expectedContributionCount": 5,
+                    "successfulContributionCount": 3,
+                    "payoutMemberName": "Jane Doe"
+                  }
+                }
+              ],
+              "hasNextPage": false,
+              "cursor": null,
+              "totalCount": 1
+            }
+          }
+
+docs: Paginated circle summaries for ACTIVE or COMPLETED memberships. Query only.

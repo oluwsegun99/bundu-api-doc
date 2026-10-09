@@ -1,7 +1,7 @@
 info:
   name: Resend Circle Invite
   type: http
-  seq: 3
+  seq: 7
 
 http:
   method: GET
@@ -13,7 +13,7 @@ http:
     type: json
     data: |-
       {
-        "membershipId": "REPLACE_WITH_INVITED_MEMBERSHIP_OBJECT_ID"
+        "inviteId": "REPLACE_WITH_CIRCLE_GROUP_INVITE_OBJECT_ID"
       }
   auth: inherit
 
@@ -22,5 +22,59 @@ settings:
   timeout: 0
   followRedirects: true
   maxRedirects: 5
+  forwardAuthorizationHeader: false
 
-docs: Captain-only. Membership must still be INVITED. Uses GET with JSON body (matches API — some HTTP clients omit bodies on GET).
+examples:
+  - name: Success — GROUP_INVITE (notification)
+    request:
+      url: ""
+      method: GET
+    response:
+      status: 200
+      statusText: OK
+      headers:
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+            "success": true,
+            "message": "Invitation notification queued",
+            "data": {
+              "resendType": "GROUP_INVITE",
+              "inviteId": "66f000000000000000000010",
+              "inviteUrl": "https://app.example.com/savings/circle/join?groupId=66f000000000000000000001&inviteId=66f000000000000000000010",
+              "groupId": "66f000000000000000000001",
+              "inviteeEmail": "member@example.com",
+              "inviteType": "REGISTERED_USER",
+              "userId": "66f000000000000000000002"
+            }
+          }
+  - name: Success — GROUP_INVITE (email)
+    request:
+      url: ""
+      method: GET
+    response:
+      status: 200
+      statusText: OK
+      headers:
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+            "success": true,
+            "message": "Invitation email queued",
+            "data": {
+              "resendType": "GROUP_INVITE",
+              "inviteId": "66f000000000000000000020",
+              "inviteUrl": "https://app.example.com/savings/circle/join?groupId=66f000000000000000000001&inviteId=66f000000000000000000020&nonRegistered=true",
+              "groupId": "66f000000000000000000001",
+              "inviteeEmail": "friend@example.com",
+              "inviteType": "NON_REGISTERED_USER"
+            }
+          }
+
+docs: "Captain-only: resend by `inviteId` in JSON body. Only PENDING/EXPIRED; ACCEPTED cannot be resent. Delivery by inviteType: REGISTERED_USER → push/in-app; NON_REGISTERED_USER → email. GET + body matches other savings routes."

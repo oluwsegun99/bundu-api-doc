@@ -1,7 +1,7 @@
 info:
   name: Activate Circle Group
   type: http
-  seq: 5
+  seq: 9
 
 http:
   method: POST
@@ -27,5 +27,6 @@ settings:
   timeout: 0
   followRedirects: true
   maxRedirects: 5
+  forwardAuthorizationHeader: false
 
 docs: Captain-only when roster full. Omit `adminPayoutAssignments` unless payoutPolicy is ADMIN_ASSIGNED (then required — membership `_id` per row, positions 1..N).

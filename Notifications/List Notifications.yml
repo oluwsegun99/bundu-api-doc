@@ -1,0 +1,69 @@
+info:
+  name: List Notifications
+  type: http
+  seq: 1
+
+http:
+  method: GET
+  url: "{{baseUrl}}/me/notifications?limit=20&unreadOnly=false"
+  params:
+    - name: cursor
+      value: ""
+      type: query
+      disabled: true
+    - name: limit
+      value: "20"
+      type: query
+    - name: unreadOnly
+      value: "false"
+      type: query
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: false
+
+examples:
+  - name: Success
+    request:
+      url: ""
+      method: GET
+    response:
+      status: 200
+      statusText: OK
+      headers:
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+            "success": true,
+            "data": {
+              "items": [
+                {
+                  "id": "66f000000000000000000030",
+                  "type": "CIRCLE_MEMBERSHIP_INVITE",
+                  "title": "Invitation to Friday Circle",
+                  "body": "Ada invited you to join Friday Circle on Bundu",
+                  "action": {
+                    "kind": "OPEN_CIRCLE_INVITE",
+                    "groupId": "66f000000000000000000001",
+                    "membershipId": "66f000000000000000000010",
+                    "inviteUrl": "https://app.example.com/savings/circle/join?groupId=66f000000000000000000001&membershipId=66f000000000000000000010",
+                    "groupName": "Friday Circle"
+                  },
+                  "read": false,
+                  "sourceId": "66f000000000000000000002",
+                  "createdAt": "2026-09-28T12:00:00.000Z"
+                }
+              ],
+              "cursor": "66f000000000000000000030",
+              "hasMore": false
+            }
+          }
+
+docs: "In-app inbox. Auth only (no Tier 1 KYC). Cursor pagination: pass `cursor` = last item `id` from the previous page (keyset on `createdAt` + `_id`, same as wallet transactions)."

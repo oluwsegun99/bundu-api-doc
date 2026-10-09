@@ -1,7 +1,7 @@
 info:
   name: Join Circle
   type: http
-  seq: 4
+  seq: 8
 
 http:
   method: POST
@@ -13,7 +13,7 @@ http:
     type: json
     data: |-
       {
-        "membershipId": "REPLACE_WITH_YOUR_INVITED_MEMBERSHIP_OBJECT_ID"
+        "inviteId": "REPLACE_WITH_CIRCLE_GROUP_INVITE_OBJECT_ID"
       }
   auth: inherit
 
@@ -22,5 +22,30 @@ settings:
   timeout: 0
   followRedirects: true
   maxRedirects: 5
+  forwardAuthorizationHeader: false
 
-docs: Authenticated invitee accepts invite (user must match membership).
+examples:
+  - name: Success — joined circle
+    request:
+      url: ""
+      method: POST
+    response:
+      status: 200
+      statusText: OK
+      headers:
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+            "success": true,
+            "message": "You have joined the circle successfully",
+            "data": {
+              "membershipId": "66f000000000000000000030",
+              "groupId": "66f000000000000000000001",
+              "memberStatus": "ACTIVE"
+            }
+          }
+
+docs: Authenticated invitee redeems invite by inviteId only. Email or userId must match caller.

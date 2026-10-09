@@ -1,0 +1,51 @@
+info:
+  name: Mark Notification Read
+  type: http
+  seq: 3
+
+http:
+  method: PATCH
+  url: "{{baseUrl}}/me/notifications/REPLACE_NOTIFICATION_ID/read"
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: false
+
+examples:
+  - name: Success
+    request:
+      url: ""
+      method: PATCH
+    response:
+      status: 200
+      statusText: OK
+      headers:
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+            "success": true,
+            "message": "Notification marked as read",
+            "data": {
+              "id": "66f000000000000000000030",
+              "type": "CIRCLE_MEMBERSHIP_INVITE",
+              "title": "Invitation to Friday Circle",
+              "body": "Ada invited you to join Friday Circle on Bundu",
+              "action": {
+                "kind": "OPEN_CIRCLE_INVITE",
+                "groupId": "66f000000000000000000001",
+                "membershipId": "66f000000000000000000010",
+                "inviteUrl": "https://app.example.com/savings/circle/join?groupId=66f000000000000000000001&membershipId=66f000000000000000000010",
+                "groupName": "Friday Circle"
+              },
+              "read": true,
+              "sourceId": "66f000000000000000000002",
+              "createdAt": "2026-09-28T12:00:00.000Z"
+            }
+          }

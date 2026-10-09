@@ -18,8 +18,10 @@ http:
         "contributionAmount": 500000,
         "frequency": "MONTHLY",
         "numberOfMembers": 5,
-        "payoutPolicy": "FIXED_ORDER",
-        "gracePeriodHours": 48
+        "latePenaltyPercentage": 2,
+        "initialFundingWindowHours": 48,
+        "votingWindowHours": 12,
+        "gracePeriodHours": 24
       }
   auth: inherit
 
@@ -28,5 +30,6 @@ settings:
   timeout: 0
   followRedirects: true
   maxRedirects: 5
+  forwardAuthorizationHeader: false
 
-docs: "Creates a circle savings group. Requires Tier 1 KYC. `frequency`: DAILY | WEEKLY | MONTHLY. `payoutPolicy` optional: FIXED_ORDER | RANDOMIZED_ON_ACTIVATION | ADMIN_ASSIGNED."
+docs: "Creates a circle savings group. Requires Tier 1 KYC. `frequency`: DAILY | WEEKLY | MONTHLY. Optional: `latePenaltyPercentage` (0–5), `initialFundingWindowHours` (1–72), `votingWindowHours` (1–24), `gracePeriodHours` (0–72). Payout policy is not set at create (`payoutPolicy` null until activation)."

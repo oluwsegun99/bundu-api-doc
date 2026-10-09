@@ -1,7 +1,7 @@
 info:
   name: Get Circle Payout Ledger
   type: http
-  seq: 7
+  seq: 12
 
 http:
   method: GET
@@ -22,5 +22,6 @@ settings:
   timeout: 0
   followRedirects: true
   maxRedirects: 5
+  forwardAuthorizationHeader: false
 
 docs: Captain-only. Returns payout ledger rows for a circle the caller created (`createdBy`). Populates recipient name and cycle number. Uses GET with JSON body.

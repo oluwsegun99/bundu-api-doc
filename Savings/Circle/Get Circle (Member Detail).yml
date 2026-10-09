@@ -1,0 +1,78 @@
+info:
+  name: Get Circle (Member Detail)
+  type: http
+  seq: 2
+
+http:
+  method: GET
+  url: "{{baseUrl}}/savings/circle/group/REPLACE_WITH_CIRCLE_GROUP_OBJECT_ID"
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: false
+
+examples:
+  - name: Success
+    request:
+      url: ""
+      method: GET
+    response:
+      status: 200
+      statusText: OK
+      headers:
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+            "success": true,
+            "data": {
+              "groupId": "66f000000000000000000001",
+              "name": "Friday Circle",
+              "description": "Optional description",
+              "currency": "NGN",
+              "contributionAmount": 500000,
+              "frequency": "MONTHLY",
+              "startDate": null,
+              "expectedMemberCount": 5,
+              "currentMemberCount": 2,
+              "status": "FORMING",
+              "payoutPolicy": null,
+              "lateContributionPolicy": null,
+              "gracePeriodHours": 24,
+              "latePenaltyPercentage": 2,
+              "initialFundingWindowHours": 48,
+              "votingWindowHours": 12,
+              "destinationWalletPolicy": null,
+              "createdBy": "66f000000000000000000002",
+              "createdAt": "2026-01-01T00:00:00.000Z",
+              "updatedAt": "2026-01-02T00:00:00.000Z",
+              "members": [
+                {
+                  "membershipId": "66f000000000000000000010",
+                  "userId": "66f000000000000000000002",
+                  "memberStatus": "ACTIVE",
+                  "joinedAt": "2026-01-01T00:00:00.000Z",
+                  "payoutPosition": 1,
+                  "hasReceivedPayout": false,
+                  "name": "Jane Doe"
+                },
+                {
+                  "membershipId": "66f000000000000000000011",
+                  "userId": "66f000000000000000000003",
+                  "memberStatus": "ACTIVE",
+                  "joinedAt": "2026-01-02T00:00:00.000Z",
+                  "payoutPosition": 2,
+                  "hasReceivedPayout": false,
+                  "name": "John Smith"
+                }
+              ]
+            }
+          }
+
+docs: Full circle group + all memberships. Any member of the group; 403 if not a member, 404 if group missing.

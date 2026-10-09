@@ -1,7 +1,7 @@
 info:
   name: Invite Circle Member
   type: http
-  seq: 2
+  seq: 6
 
 http:
   method: POST
@@ -14,7 +14,7 @@ http:
     data: |-
       {
         "groupId": "REPLACE_WITH_CIRCLE_GROUP_OBJECT_ID",
-        "inviteeEmail": "friend@example.com"
+        "inviteeUserId": "REPLACE_WITH_REGISTERED_USER_OBJECT_ID"
       }
   auth: inherit
 
@@ -23,5 +23,56 @@ settings:
   timeout: 0
   followRedirects: true
   maxRedirects: 5
+  forwardAuthorizationHeader: false
 
-docs: Captain-only. Invite must be a registered Bundu email.
+examples:
+  - name: Success — GROUP_INVITE (registered)
+    request:
+      url: ""
+      method: POST
+    response:
+      status: 201
+      statusText: Created
+      headers:
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+            "success": true,
+            "message": "Invitation created; notification queued",
+            "data": {
+              "inviteType": "GROUP_INVITE",
+              "inviteId": "66f000000000000000000010",
+              "inviteUrl": "https://app.example.com/savings/circle/join?groupId=66f000000000000000000001&inviteId=66f000000000000000000010",
+              "groupId": "66f000000000000000000001",
+              "inviteeUserId": "66f000000000000000000002"
+            }
+          }
+  - name: Success — GROUP_INVITE (email)
+    request:
+      url: ""
+      method: POST
+    response:
+      status: 201
+      statusText: Created
+      headers:
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+            "success": true,
+            "message": "Invitation created and email queued",
+            "data": {
+              "inviteType": "GROUP_INVITE",
+              "inviteId": "66f000000000000000000020",
+              "inviteUrl": "https://app.example.com/savings/circle/join?groupId=66f000000000000000000001&inviteId=66f000000000000000000020&nonRegistered=true",
+              "groupId": "66f000000000000000000001",
+              "inviteeEmail": "friend@example.com"
+            }
+          }
+
+docs: "Captain-only. XOR: inviteeUserId (registered → GROUP_INVITE + push/in-app) OR inviteeEmail (must not be registered → GROUP_INVITE + email with nonRegistered=true on URL)."
