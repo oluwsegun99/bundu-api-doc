@@ -1,0 +1,67 @@
+info:
+  name: Cast Circle Payout Order Vote
+  type: http
+  seq: 8
+
+http:
+  method: POST
+  url: "{{baseUrl}}/savings/circle/group/REPLACE_WITH_CIRCLE_GROUP_OBJECT_ID/elections/payout-order/vote"
+  headers:
+    - name: Content-Type
+      value: application/json
+  body:
+    type: json
+    data: |-
+      {
+        "choice": "APPROVE"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: false
+
+examples:
+  - name: Success (vote recorded)
+    request:
+      url: ""
+      method: POST
+    response:
+      status: 200
+      statusText: OK
+      headers:
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+            "success": true,
+            "data": {
+              "groupStatus": "PAYOUT_ORDER_VOTE",
+              "election": {
+                "electionId": "66f000000000000000000020",
+                "electionType": "PAYOUT_ORDER_APPROVAL",
+                "sequence": 1,
+                "status": "OPEN",
+                "openedAt": "2026-01-01T00:00:00.000Z",
+                "closesAt": "2026-01-02T00:00:00.000Z",
+                "resolvedAt": null,
+                "tieBreakRule": "DEFAULT_APPROVE",
+                "outcome": null
+              },
+              "assignments": [],
+              "tallies": { "APPROVE": 1, "REJECT": 0 },
+              "eligibleVoterCount": 5,
+              "castCount": 1,
+              "myVote": {
+                "choice": "APPROVE",
+                "castAt": "2026-01-01T12:00:00.000Z"
+              }
+            }
+          }
+
+docs: "Active eligible member only. choice: APPROVE | REJECT. Response matches GET payout-order election. Closes when all eligible members voted or after closesAt. 409 if closesAt passed."

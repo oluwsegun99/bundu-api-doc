@@ -1,0 +1,71 @@
+info:
+  name: Get Circle Payout Order Election
+  type: http
+  seq: 5
+
+http:
+  method: GET
+  url: "{{baseUrl}}/savings/circle/group/REPLACE_WITH_CIRCLE_GROUP_OBJECT_ID/elections/payout-order"
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: false
+
+examples:
+  - name: Success (open)
+    request:
+      url: ""
+      method: GET
+    response:
+      status: 200
+      statusText: OK
+      headers:
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+            "success": true,
+            "data": {
+              "groupStatus": "PAYOUT_ORDER_VOTE",
+              "election": {
+                "electionId": "66f000000000000000000020",
+                "electionType": "PAYOUT_ORDER_APPROVAL",
+                "sequence": 1,
+                "status": "OPEN",
+                "openedAt": "2026-01-01T00:00:00.000Z",
+                "closesAt": "2026-01-02T00:00:00.000Z",
+                "resolvedAt": null,
+                "tieBreakRule": "DEFAULT_APPROVE",
+                "outcome": null
+              },
+              "assignments": [
+                {
+                  "membershipId": "66f000000000000000000011",
+                  "payoutPosition": 1,
+                  "name": "Jane Doe",
+                  "isCaller": false
+                },
+                {
+                  "membershipId": "66f000000000000000000010",
+                  "payoutPosition": 2,
+                  "name": "John Smith",
+                  "isCaller": true
+                }
+              ],
+              "tallies": { "APPROVE": 1, "REJECT": 0 },
+              "eligibleVoterCount": 5,
+              "castCount": 1,
+              "myVote": {
+                "choice": "APPROVE",
+                "castAt": "2026-01-01T12:00:00.000Z"
+              }
+            }
+          }
+
+docs: Member-only. Open PAYOUT_ORDER_APPROVAL election, or latest CLOSED. Includes proposal assignments (name, isCaller), tallies, and caller's cast.

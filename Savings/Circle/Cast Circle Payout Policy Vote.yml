@@ -1,0 +1,69 @@
+info:
+  name: Cast Circle Payout Policy Vote
+  type: http
+  seq: 4
+
+http:
+  method: POST
+  url: "{{baseUrl}}/savings/circle/group/REPLACE_WITH_CIRCLE_GROUP_OBJECT_ID/elections/payout-policy/vote"
+  headers:
+    - name: Content-Type
+      value: application/json
+  body:
+    type: json
+    data: |-
+      {
+        "choice": "RANDOMIZED"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: false
+
+examples:
+  - name: Success (vote recorded)
+    request:
+      url: ""
+      method: POST
+    response:
+      status: 200
+      statusText: OK
+      headers:
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+            "success": true,
+            "data": {
+              "groupStatus": "PAYOUT_POLICY_SELECTION",
+              "election": {
+                "electionId": "66f000000000000000000020",
+                "electionType": "PAYOUT_POLICY",
+                "sequence": 1,
+                "status": "OPEN",
+                "openedAt": "2026-01-01T00:00:00.000Z",
+                "closesAt": "2026-01-02T00:00:00.000Z",
+                "resolvedAt": null,
+                "tieBreakRule": "DEFAULT_RANDOMIZED",
+                "outcome": null
+              },
+              "tallies": {
+                "RANDOMIZED": 1,
+                "ADMIN_ASSIGNED": 0
+              },
+              "eligibleVoterCount": 5,
+              "castCount": 1,
+              "myVote": {
+                "choice": "RANDOMIZED",
+                "castAt": "2026-01-01T12:00:00.000Z"
+              }
+            }
+          }
+
+docs: "Active eligible member only. choice: RANDOMIZED | ADMIN_ASSIGNED. Response matches GET payout-policy election. Closes when all eligible members voted or after closesAt. 409 if closesAt passed."

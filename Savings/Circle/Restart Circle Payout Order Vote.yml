@@ -1,0 +1,61 @@
+info:
+  name: Restart Circle Payout Order Vote
+  type: http
+  seq: 7
+
+http:
+  method: POST
+  url: "{{baseUrl}}/savings/circle/group/REPLACE_WITH_CIRCLE_GROUP_OBJECT_ID/elections/payout-order/restart"
+  headers:
+    - name: Content-Type
+      value: application/json
+  body:
+    type: json
+    data: |-
+      {
+        "assignments": [
+          { "membershipId": "REPLACE_WITH_MEMBERSHIP_OBJECT_ID", "payoutPosition": 1 },
+          { "membershipId": "REPLACE_WITH_MEMBERSHIP_OBJECT_ID_2", "payoutPosition": 2 }
+        ],
+        "tieBreakRule": "DEFAULT_REJECT"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: false
+
+examples:
+  - name: Success (new round opened)
+    request:
+      url: ""
+      method: POST
+    response:
+      status: 200
+      statusText: OK
+      headers:
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+            "success": true,
+            "data": {
+              "electionId": "66f000000000000000000021",
+              "electionType": "PAYOUT_ORDER_APPROVAL",
+              "sequence": 2,
+              "status": "OPEN",
+              "openedAt": "2026-01-02T00:00:00.000Z",
+              "closesAt": "2026-01-03T00:00:00.000Z",
+              "tieBreakRule": "DEFAULT_REJECT",
+              "supersedesElectionId": "66f000000000000000000020",
+              "eligibleVoterCount": 5,
+              "assignmentCount": 5
+            }
+          }
+
+docs: Captain only. Requires an OPEN PAYOUT_ORDER_APPROVAL election. Cancels it (CANCELLED), opens sequence+1 with new proposal body. 404 if no open vote.

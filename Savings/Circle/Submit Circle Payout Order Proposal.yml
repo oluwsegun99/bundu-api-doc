@@ -1,0 +1,60 @@
+info:
+  name: Submit Circle Payout Order Proposal
+  type: http
+  seq: 6
+
+http:
+  method: POST
+  url: "{{baseUrl}}/savings/circle/group/REPLACE_WITH_CIRCLE_GROUP_OBJECT_ID/elections/payout-order/proposal"
+  headers:
+    - name: Content-Type
+      value: application/json
+  body:
+    type: json
+    data: |-
+      {
+        "assignments": [
+          { "membershipId": "REPLACE_WITH_MEMBERSHIP_OBJECT_ID", "payoutPosition": 1 },
+          { "membershipId": "REPLACE_WITH_MEMBERSHIP_OBJECT_ID_2", "payoutPosition": 2 }
+        ],
+        "tieBreakRule": "DEFAULT_APPROVE"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: false
+
+examples:
+  - name: Success (election opened)
+    request:
+      url: ""
+      method: POST
+    response:
+      status: 200
+      statusText: OK
+      headers:
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+            "success": true,
+            "data": {
+              "electionId": "66f000000000000000000020",
+              "electionType": "PAYOUT_ORDER_APPROVAL",
+              "sequence": 1,
+              "status": "OPEN",
+              "openedAt": "2026-01-01T00:00:00.000Z",
+              "closesAt": "2026-01-02T00:00:00.000Z",
+              "tieBreakRule": "DEFAULT_APPROVE",
+              "eligibleVoterCount": 5,
+              "assignmentCount": 5
+            }
+          }
+
+docs: Captain only. Group status PAYOUT_ORDER_VOTE and payoutPolicy ADMIN_ASSIGNED. Opens PAYOUT_ORDER_APPROVAL election; 409 if one is already open.

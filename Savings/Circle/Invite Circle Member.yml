@@ -1,7 +1,7 @@
 info:
   name: Invite Circle Member
   type: http
-  seq: 6
+  seq: 12
 
 http:
   method: POST
